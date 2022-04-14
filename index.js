@@ -1,6 +1,6 @@
 import http from 'http';
 import { parse } from 'querystring';
-import { boats, getBoatByName, getBoat } from './data.js';
+import { boats, getAll, getResource } from './data.js';
 
 http.createServer((req, res) => {
   const path = req.url.toLowerCase()
@@ -11,15 +11,11 @@ http.createServer((req, res) => {
   switch(path) {
     case '/':
       res.writeHead(200, {'Content-Type': 'text/html', 'Connection': 'Keep-Alive'});
-      res.end(JSON.stringify(boats));
+      res.end(JSON.stringify(getAll()));
       break;
     case `/detail?${param}=${query.name}`:
       res.writeHead(200, {'Content-Type': 'text/html', 'Connection': 'Keep-Alive'});
-      res.end(JSON.stringify(getBoatByName(`${query.name}`)));
-      break;
-    case `/detail?${param}=${query.id}`:
-      res.writeHead(200, {'Content-Type': 'text/html', 'Connection': 'Keep-Alive'});
-      res.end(JSON.stringify(getBoat(`${query.id}`)));
+      res.end(JSON.stringify(getResource(`${param}`, `${query.name}`)));
       break;
     case '/about':
       res.writeHead(200, {'Content-Type': 'text/html'});

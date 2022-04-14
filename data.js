@@ -31,16 +31,13 @@ const boats = [
   },
 ]
 
-const getAllTheBoats = () => { 
+const getResource = (resource, id) => {
+  console.log(resource, id)
+  return boats.find(el => el[`${resource}`] == `${id}` )
+}
+
+const getAll = () => { 
   return boats;
 }
 
-const getBoatByName = (name) => {
-  return boats.find(el => el.name == name)
-}
-
-const getBoat = (id) => {
-  return boats.find(el => el.id == id)
-}
-
-export { boats, getAllTheBoats, getBoat, getBoatByName }
+export { boats, getAll, getResource }
