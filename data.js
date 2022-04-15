@@ -1,3 +1,4 @@
+
 const boats = [
   {
     name: 'parsifal',
@@ -29,15 +30,22 @@ const boats = [
     type: 'house',
     id: 5
   },
+  {
+    name: 'blue cat',
+    length: 65,
+    type: 'house',
+    id: 5
+  }
 ]
+
+const getAll = () => { 
+  return boats;
+}
 
 const getResource = (resource, id) => {
   console.log(resource, id)
   return boats.find(el => el[`${resource}`] == `${id}` )
 }
 
-const getAll = () => { 
-  return boats;
-}
 
 export { boats, getAll, getResource }
