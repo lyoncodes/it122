@@ -2,9 +2,7 @@
 <h1>Boats</h1>
 <ul>
   <% boats.forEach(function(boat){ %>
-    <li><h3>name: <a href="/detail/<%= boat.name %>"><%= boat.name %></a></h3></li>
-    <li>length: <%= boat.length %></li>
-    <li>type: <%= boat.type %></li>
+    <li><h3> <a href="/detail/<%= boat.name %>"><%= boat.name %></a></h3></li>
   <% }); %>
 </ul>
 <form action="" method="POST">

@@ -1,6 +1,4 @@
 import express from 'express';
-import http from 'http';
-import { parse } from 'querystring';
 import { getAll, getResource } from './data.js';
 
 const app = express();
@@ -21,14 +19,12 @@ app.get('/', (req, res) => {
   res.render('home', {boats: boats})
 })
 app.post('/', (req, res) => {
-  console.log(req.body.name)
-  const obj = JSON.stringify(getResource('name', req.body.name))
-  const boat = JSON.parse(obj)
-  console.log(boat)
-  res.render('detail', {name: boat.name, length: boat.length, type: boat.type })
+  // const obj = JSON.stringify(getResource('name', req.body.name))
+  // const boat = JSON.parse(obj)
+  const boat = getResource('name', req.body.name)
+  res.render('detail', { name: boat.name, length: boat.length, type: boat.type })
 })
 app.get('/detail/:id', (req, res) => {
-  console.log(req.params.id)
   const boat = getResource('name', req.params.id)
   res.render('detail', { name: boat.name, length: boat.length, type: boat.type })
 })
