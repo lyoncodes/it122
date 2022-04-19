@@ -43,9 +43,8 @@ const getAll = () => {
 }
 
 const getResource = (resource, id) => {
-  console.log(resource, id)
-  return boats.find(el => el[`${resource}`] == `${id}` )
+  return boats.find(el => el[`${resource}`] == id )
 }
 
 
-export { boats, getAll, getResource }
+export { getAll, getResource }
