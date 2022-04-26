@@ -13,11 +13,10 @@ app.get('/', (req, res, next) => {
   res.render('home', {boats: getAll()})
 })
 app.post('/', (req, res) => {
-  res.render('detail', getResource('name', req.body.name))
+  res.render('detail', { boat: getResource('name', req.body.name) })
 })
 app.get('/detail/:name', (req, res) => {
-  const boat = getResource('name', req.params.name)
-  res.render('detail', { name: boat.name, length: boat.length, type: boat.type })
+  res.render('detail', { boat: getResource('name', req.params.name) })
 })
 
 app.listen(process.env.PORT || 3000);
