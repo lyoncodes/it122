@@ -1,4 +1,3 @@
-
 const boats = [
   {
     name: 'parsifal',

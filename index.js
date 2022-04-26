@@ -9,23 +9,14 @@ app.set('view engine', 'ejs');
 app.use(express.urlencoded());
 app.use(express.json());
 
-app.get('/', (req, res) => {
-  const obj = JSON.stringify(getAll())
-  const boat = JSON.parse(obj)
-  let boats = []
-  boat.forEach(element => {
-    boats.push(element)
-  });
-  res.render('home', {boats: boats})
+app.get('/', (req, res, next) => {
+  res.render('home', {boats: getAll()})
 })
 app.post('/', (req, res) => {
-  // const obj = JSON.stringify(getResource('name', req.body.name))
-  // const boat = JSON.parse(obj)
-  const boat = getResource('name', req.body.name)
-  res.render('detail', { name: boat.name, length: boat.length, type: boat.type })
+  res.render('detail', getResource('name', req.body.name))
 })
-app.get('/detail/:id', (req, res) => {
-  const boat = getResource('name', req.params.id)
+app.get('/detail/:name', (req, res) => {
+  const boat = getResource('name', req.params.name)
   res.render('detail', { name: boat.name, length: boat.length, type: boat.type })
 })
 
