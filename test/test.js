@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { getResource, addResource, deleteResource } from './data.js';
+import { getResource, addResource, deleteResource } from '../data.js';
 
 const case1 = {
   name: 'parsifal',
