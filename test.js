@@ -1,34 +1,50 @@
 import { expect } from "chai";
-import { getAll, getResource } from './data.js';
+import { getResource, addResource, deleteResource } from './data.js';
 
-const boat1 = {
+const case1 = {
   name: 'parsifal',
   length: 44,
   type: 'sailing-yacht',
   id: 1
 }
 
+const case2 = {
+  name: 'lo and behold',
+  length: 30,
+  type: 'sailing-yacht',
+  id: 7
+}
+
 describe("Boat Module", () => {
-  beforeEach(() => {
-    console.log('holla!')
+  // test hooks
+  // beforeEach(() => {
+  //   console.log('connect to DB')
+  // })
+
+  it('getResource by property returns the correct boat', () => {
+    let res = getResource("name", case1.name)
+    let res2 = getResource("id", case1.id)
+    expect(res).to.deep.equal(case1)
+    expect(res2).to.deep.equal(case1)
   })
-  it('getResource by name returns the correct boat', () => {
-    let res = getResource("name", boat1.name)
-    expect(res).to.deep.equal(boat1)
+  it('getResource returns undefined if resource does not exist', () => {
+    let res = getResource("name", null)
+    expect(res).to.deep.equal(undefined)
   })
-  it('getResource by id returns the correct boat', () => {
-    let res = getResource("id", boat1.id)
-    expect(res).to.deep.equal(boat1)
+  it('addResource successfully adds resource', () => {
+    let res = addResource(case2)
+    expect(res).to.equal(`${case2.name} successfully added ⛵️`)
   })
-  it('length is a number', () => {
-    expect(typeof(boat1.length)) === Number
+  it('addResource rejects duplicate entries', () => {
+    let res = addResource(case1)
+    expect(res).to.equal(`${case1.name} already exists`)
   })
-  it('Objects should be equal', () => {
-    expect(boat1).to.deep.equal({
-      name: 'parsifal',
-      length: 44,
-      type: 'sailing-yacht',
-      id: 1
-    })
-  });
+  it('deleteResource successfully removes element', () => {
+    let res = deleteResource(case1)
+    expect(res).to.equal(`${case1.name} successfully removed`)
+  })
+  it('deleteResource for non existant resource returns undefined', () => {
+    let res = deleteResource(case2)
+    expect(res).to.equal(undefined)
+  })
 });

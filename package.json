@@ -21,9 +21,11 @@
   "homepage": "https://github.com/lyoncodes/it122#readme",
   "dependencies": {
     "ejs": "^3.1.6",
-    "express": "^4.17.3"
+    "express": "^4.17.3",
+    "mocha": "^10.0.0"
   },
   "devDependencies": {
+    "chai": "^4.3.6",
     "cypress": "^9.6.0",
     "eslint": "^8.14.0"
   },
