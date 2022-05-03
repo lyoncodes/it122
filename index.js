@@ -23,5 +23,9 @@ app.get('/detail/:name', (req, res) => {
     res.render('detail', { boat: boat })
   })
 })
-
+app.get('/delete/:name', (req, res) => {
+  boats.deleteOne({ name: req.params.name }).then(() => {
+    console.log('deleted');
+  })
+})
 app.listen(process.env.PORT || 3000);
