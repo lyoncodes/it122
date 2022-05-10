@@ -48,3 +48,5 @@ describe("Boat Module", () => {
     expect(res).to.equal(undefined)
   })
 });
+
+export { addCase }

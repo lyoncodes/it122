@@ -1,6 +1,8 @@
 import express from 'express';
+import cors from 'cors';
 import { getAll, getResource} from './data.js';
 import { boats } from './models/Boat.js';
+import { api } from './routes.js';
 
 const app = express();
 
@@ -9,6 +11,9 @@ app.use(express.static('./public'));
 app.set('view engine', 'ejs');
 app.use(express.urlencoded());
 app.use(express.json());
+// api routing
+app.use('/api', cors());
+app.use('/api', api)
 
 app.get('/', (req, res) => {
   boats.find({}).lean().then((boats) => { 

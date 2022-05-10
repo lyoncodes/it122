@@ -1,0 +1,11 @@
+GET http://localhost:3000/api/getAll HTTP/1.1
+
+POST http://localhost:3000/api/add HTTP/1.1
+content-type: application/json
+
+{
+  "name": "DataBaby",
+  "length": 28,
+  "type": "sailing-yacht",
+  "id": 4
+}

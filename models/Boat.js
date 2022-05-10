@@ -12,10 +12,14 @@ mongoose.connection.on('open', () => {
 })
 
 const boatSchema = mongoose.Schema({
+  id: Number,
   name: String,
   length: Number,
   type: String,
-}, {
+  GET: String,
+},
+{
+  versionKey: false,
   collection: 'boats'
 });
 
