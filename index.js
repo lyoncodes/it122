@@ -14,10 +14,9 @@ app.use(express.json());
 // api routing
 app.use('/api', cors());
 app.use('/api', api)
-
 app.get('/', (req, res) => {
   boats.find({}).lean().then((boats) => { 
-    res.render('home', { boats: boats })
+    res.render('react-home', { boats: JSON.stringify(boats) })
   })
 })
 app.post('/', (req, res) => {
