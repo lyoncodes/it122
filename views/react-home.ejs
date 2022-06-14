@@ -12,59 +12,103 @@
   <body>
     <div id="root"></div>
     <script type="text/babel">
-      class Boat extends React.Component {
-        constructor(props) {
-          super(props);
-        }
-        render(){
-          let {name, length, type} = this.props.boat;
-          let url = `/detail/${name}`
-          return (
-            <div>
-              <ul>
-                <li>{name}</li>
-                <li>{length}</li>
-                <li>{type}</li>
-              </ul>
-              <form action={url} method="GET">
-                <button type="submit">Details</button>
-              </form>
-            </div>
-          )
-        }
-      }
-      class Boats extends React.Component {
-        constructor(props) {
-          super(props);
-        }
-        render(){
-          let boats = this.props.boats.map((boat) => {
-            return <Boat boat={boat}></Boat>
-          })
-          return (<div>{boats}</div>)
-        }
-      }
+      // declare an empty object inside of our state (activeBoat//activePlayer)
+      // a function that populates the activeBoat object with data from a form
       class App extends React.Component {
         constructor(props) {
-          let boats = <%- boats %>
           super(props);
-          this.state = { boats: boats }
+          this.state = {
+            boats: <%- boats %>,
+            activeBoat: {},
+            showForm: false
+          }
+          this.setActiveBoat = this.setActiveBoat.bind(this);
         }
-        componentDidMount(){
-          console.log('App has mounted')
+        setActiveBoat = (e) => {
+          let boat = this.state.boats.find(boat => boat._id == e.id)
+          this.setState({ activeBoat: boat })
+        }
+        clearBoat = (e) => {
+          let boat = {name: "", length: "", type: "", _id: "", id: ""}
+          this.setState({ activeBoat: boat })
+        }
+        handleChange = (boat) => {
+          const idx = this.state.boats.findIndex((el) => el._id == boat.target.id)
+          this.state.boats[idx][boat.target.name] = boat.target.value
+          this.setState({ boats: this.state.boats })
+        }
+        showForm = () => {
+          this.setState((prevState, props) => ({
+            showForm: !prevState.showForm
+          }))
         }
         render(){
           return (
             <div>
-              <Boats boats={this.state.boats}></Boats>
+              <BoatList boats={this.state.boats} setActiveBoat={this.setActiveBoat} showForm={this.showForm} activeBoat={this.state.activeBoat}></BoatList>
+
+              {this.state.activeBoat.name ? <div><h1>{this.state.activeBoat.name}</h1><a onClick={this.showForm}>edit</a></div> : <div><h1>No Selected Boat</h1></div>}
+              
+              {this.state.showForm ? <DetailForm boat={this.state.activeBoat} handleChange={this.handleChange} clearBoat={this.clearBoat}></DetailForm> : null}
             </div>
           )
         }
       }
-      function MyApp(props) {
-        // super(props);
-        // this.state={ user: 'test'}
-        return <h1>Hello, world!</h1>;
+
+      const DetailForm = (props) => {
+        
+        let {name, length, type, _id} = props.boat
+        
+        const updateClick = (e) => {
+          e.preventDefault()
+        }
+        const clearForm = (e) => {
+          e.preventDefault()
+          props.clearBoat(e.target)
+        }
+        
+        return (
+          <form>
+            <input type="text" name="name" value={name || ""} id={_id} onChange={props.handleChange} />
+            <input type="text" name="length" value={length || ""} id={_id} onChange={props.handleChange} />
+            <input type="text" name="type" value={type || ""} id={_id} onChange={props.handleChange} />
+            <button onClick={updateClick}>Submit</button>
+            <button id={_id} onClick={clearForm}>Clear</button>
+          </form>
+        )
+      }
+
+      class BoatList extends React.Component {
+        constructor(props) {
+          super(props);
+        }
+        render(){
+          let boats = this.props.boats.map((boat) => 
+            <Boat setActiveBoat={this.props.setActiveBoat} boat={boat} activeBoat={this.props.activeBoat} showForm={this.props.showForm}></Boat>
+          );
+          return (
+            <div>
+              {boats}
+            </div>
+          )
+        }
+      }
+
+      class Boat extends React.Component {
+        constructor(props) {
+          super(props)
+        }
+        activateBoat = (e) => {
+          this.props.setActiveBoat(e.target)
+        }
+        render(){
+          let {name, length, type, _id} = this.props.boat
+          return (
+            <div>
+              <h2><a id={_id} name={name} type={type} length={length} onClick={this.activateBoat}>{name}</a></h2>
+            </div>
+          )
+        }
       }
 
       const container = document.getElementById('root');
