@@ -37,10 +37,53 @@
           this.state.boats[idx][boat.target.name] = boat.target.value
           this.setState({ boats: this.state.boats })
         }
+        onTransact = (id) => {
+          let res = this.state.boats.filter(boat => boat.id != id);
+          this.setState({ boats: res })
+        }
         showForm = () => {
           this.setState((prevState, props) => ({
             showForm: !prevState.showForm
           }))
+        }
+        // CRUD
+        saveBoat = () => {
+          let req = {
+            method: "POST",
+            headers: {
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(this.state.activeBoat)
+          }
+          fetch('api/addResource', req)
+            .then(
+              res => console.log(res.json())
+            )
+        }
+        updateBoat = () => {
+          let req = {
+            method: "POST",
+            headers: {
+              'Content-type': 'application/json',
+            },
+            body: JSON.stringify(this.state.activeBoat)
+          }
+          fetch(`/api/update/${this.state.activeBoat.id}`, req)
+            .then(
+              res => console.log(res.json())
+            )
+        }
+        deleteBoat = () => {
+          let req = {
+            method: "GET",
+            headers: {
+              'Content-type': 'application/json',
+            }
+          }
+          fetch(`/api/deleteResource/${this.state.activeBoat.id}`, req)
+            .then(
+              res => this.onTransact(this.state.activeBoat.id)
+            )
         }
         render(){
           return (
@@ -49,7 +92,7 @@
 
               {this.state.activeBoat.name ? <div><h1>{this.state.activeBoat.name}</h1><a onClick={this.showForm}>edit</a></div> : <div><h1>No Selected Boat</h1></div>}
               
-              {this.state.showForm ? <DetailForm boat={this.state.activeBoat} handleChange={this.handleChange} clearBoat={this.clearBoat}></DetailForm> : null}
+              {this.state.showForm ? <DetailForm boat={this.state.activeBoat} handleChange={this.handleChange} clearBoat={this.clearBoat} saveBoat={this.saveBoat} updateBoat={this.updateBoat} deleteBoat={this.deleteBoat}></DetailForm> : null}
             </div>
           )
         }
@@ -66,6 +109,14 @@
           e.preventDefault()
           props.clearBoat(e.target)
         }
+        const saveBoat = (e) => {
+          e.preventDefault()
+          props.updateBoat(e.target)
+        }
+        const deleteBoat = (e) => {
+          e.preventDefault()
+          props.deleteBoat(e.target)
+        }
         
         return (
           <form>
@@ -74,6 +125,8 @@
             <input type="text" name="type" value={type || ""} id={_id} onChange={props.handleChange} />
             <button onClick={updateClick}>Submit</button>
             <button id={_id} onClick={clearForm}>Clear</button>
+            <button id={_id} onClick={saveBoat}>Save</button>
+            <button id={_id} onClick={deleteBoat}>Delete</button>
           </form>
         )
       }

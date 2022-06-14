@@ -63,4 +63,15 @@ api.post("/addResource", (req, res) => {
   })
 })
 
+api.post("/update/:id([0-9]+)", (req, res) => {
+  boats.updateOne({ id: req.params.id}, req.body, (err, result) => {
+    if (err) {
+      res.json({ success: false, error: 'bad', method: "update"})
+      return
+    }
+    res.json({ success: true })
+  })
+})
+
+
 export { api }
